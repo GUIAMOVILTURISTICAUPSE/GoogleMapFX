@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Maps</title>
+    <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <style>#mapcanvas { height: 360px; width: 100%}</style>
+
+
+
+</head>
+<body>
+<h1>Google Maps</h1>
+<div id="mapcanvas">
+
+    <script type="text/javascript">
+    
+        document.map = new google.maps.Map(document.getElementById("mapcanvas"));
+        var latlng = new google.maps.LatLng(-0.22985,-78.52495);
+        var Options = {
+            zoom: 15,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("mapcanvas"), Options);
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(-0.22985,-78.52495),
+            map: map,
+            draggable: true,
+            title: "",
+            autoPan: true
+        });
+        
+        var infobulle = new google.maps.InfoWindow({
+        		content: "Coordenadas: " + latlng
+        	});
+        
+        
+        google.maps.event.addListener(marker, 'dragend', function(){
+        	infobulle.close();
+	        latlng=marker.getPosition();
+	        infobulle = new google.maps.InfoWindow({
+        		content: "Coordenadas: " + latlng
+        	});
+	    });
+        
+        
+        google.maps.event.addListener(marker, 'mouseover', function() {
+            infobulle.open(map, marker);
+        });
+        
+        document.goToLocation = function(x, y) {
+            alert("goToLocation, x: " + x +", y:" + y);
+            var latLng = new google.maps.LatLng(x, y);
+            marker.setPosition(latLng);
+            map.setCenter(latLng);
+        }
+        
+        document.obtenerLatitud = function(){
+        	return latlng.lat();
+        }
+        
+        document.obtenerLongitud = function(){
+        	return latlng.lng();
+        }
+        
+    </script>
+
+
+</div>
+</body>
+</html>
